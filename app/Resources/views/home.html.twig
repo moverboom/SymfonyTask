@@ -1,0 +1,56 @@
+{%  extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-6 col-lg-offset-3">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Tasks
+            </div>
+            {{ dump(tasks) }}
+            {% for task in tasks %}
+                {{ dump(task.currentDateTime) }}
+                {{ dump(task.expired) }}
+            {% endfor %}
+            <div class="panel-body">
+                {#{% if tasks is empty %}#}
+                    {#<p>You are all done!</p>#}
+                {#{% else %}#}
+
+                    {#<div class="list-group">#}
+                        {#{% for task in tasks %}#}
+                            {#{% if not task.completed %}#}
+                                {#<a class="list-group-item" href="#">{{ task.title }}</a>#}
+                                {#{{ task.expired }}#}
+                            {#{% endif %}#}
+                        {#{% endfor %}#}
+                    {#</div>#}
+
+                {#{% endif %}#}
+            </div>
+        </div>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Tasks
+            </div>
+            <div class="panel-body">
+                {% if tasks is empty %}
+                    <p>You are all done!</p>
+                {% else %}
+
+                    <div class="list-group">
+                        {% for task in tasks %}
+                            {% if task.completed %}
+                                <a class="list-group-item" href="#">{{ task.title }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
