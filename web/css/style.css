@@ -5,3 +5,8 @@ body {
 ul {
     list-style: none;
 }
+
+#task_deadline {
+    cursor: pointer;
+    background-color: white;
+}

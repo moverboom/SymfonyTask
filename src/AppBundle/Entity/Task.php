@@ -173,8 +173,7 @@ class Task
      */
     public function isExpired()
     {
-        return $this->getCurrentDateTime()->diff($this->deadline)->d < 0;
-        //return $this->getCurrentDateTime();
+        return $this->getCurrentDateTime()->diff($this->deadline)->d > 0;
     }
 
     /**
@@ -226,9 +225,10 @@ class Task
     /**
      * @ORM\PrePersist()
      */
-    public function setCreatedAtOnPersist()
+    public function setTimestampsOnPersist()
     {
         $this->createdAt = $this->getCurrentDateTime();
+        $this->updatedAt = $this->getCurrentDateTime();
     }
 
     /**
@@ -240,7 +240,6 @@ class Task
     }
 
     public function getCurrentDateTime() {
-        //return DateTime::createFromFormat('Y-m-d H:i:s', strval(time()));
         return new DateTime();
     }
 }
