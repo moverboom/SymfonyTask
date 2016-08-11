@@ -18,7 +18,10 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if not task.completed %}
-                                <a class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}" href="{{ url('edit_task', {'id': task.id}) }}">{{ task.title }}</a>
+                                <a class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}" href="{{ url('edit_task', {'id': task.id}) }}">
+                                    {{ task.title }}
+                                    <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
+                                </a>
                             {% endif %}
                         {% endfor %}
                     </div>

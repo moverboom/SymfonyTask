@@ -173,7 +173,7 @@ class Task
      */
     public function isExpired()
     {
-        return $this->getCurrentDateTime()->diff($this->deadline)->d > 0;
+        return $this->getCurrentDateTime() > $this->deadline;
     }
 
     /**

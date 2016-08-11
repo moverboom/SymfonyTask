@@ -22,6 +22,8 @@ class TaskType extends AbstractType
             ))
             ->add('deadline', DateTimeType::class, array(
                 'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm',
+                'html5' => false,
                 'attr' => array('class' => 'form-control',
                     'readonly' => 'readonly',)
             ))

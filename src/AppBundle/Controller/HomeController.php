@@ -63,22 +63,7 @@ class HomeController extends Controller
                     ->getRepository('AppBundle:Task')
                     ->find($id);
 
-        $form = $this->createFormBuilder($task)
-            ->add('title', TextType::class, array(
-                'attr' => array('class' => 'form-control')
-            ))
-            ->add('description', TextType::class, array(
-                'attr' => array('class' => 'form-control')
-            ))
-            ->add('deadline', DateTimeType::class, array(
-                'widget' => 'single_text',
-                'attr' => array('class' => 'form-control',
-                    'readonly' => 'readonly',)
-            ))
-            ->add('submit', SubmitType::class, array(
-                'label' => 'Save',
-                'attr' => array('class' => 'btn btn-primary')))
-            ->getForm();
+        $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
