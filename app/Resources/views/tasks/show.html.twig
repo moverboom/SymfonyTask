@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ task.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading clearfix">
+                {{ task.title }}
+                <div class="pull-right" >
+                    <a href="{{ url('edit_task', {'id': task.id}) }}" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit Task">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Complete">
+                        <span class="glyphicon glyphicon-check"></span>
+                    </a>
+                    <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove">
+                        <div data-toggle="modal" data-target="#modal_remove_task">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                {{ task.description }}
+            </div>
+            <div class="panel-footer">
+                Deadline: {{ task.deadline.format('Y-m-d H:i') }}
+            </div>
+        </div>
+    </div>
+    {% include 'templates/modals/remove_task_modal.html.twig' %}
+{% endblock %}
+

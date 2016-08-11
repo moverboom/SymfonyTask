@@ -5,16 +5,15 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class HomeController extends Controller
 {
     /**
      * @Route("/", name="home")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function homeAction() {
         $tasks = $this->getDoctrine()
@@ -28,6 +27,7 @@ class HomeController extends Controller
 
     /**
      * @Route("/add", name="add_task")
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -48,12 +48,13 @@ class HomeController extends Controller
 
         return $this->render('tasks/add.html.twig', array(
             'form' => $form->createView(),
-            'task' => $task,
+            'task' => $task
         ));
     }
 
     /**
      * @Route("/edit/{id}", name="edit_task")
+     *
      * @param $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -69,7 +70,6 @@ class HomeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($task);
             $em->flush();
 
             return $this->redirectToRoute('home');
@@ -77,7 +77,41 @@ class HomeController extends Controller
 
         return $this->render('tasks/add.html.twig', array(
             'form' => $form->createView(),
-            'task' => $task,
+            'task' => $task
         ));
+    }
+
+    /**
+     * @Route("/show/{id}", name="show_task")
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showTaskAction($id) {
+        $task = $this->getDoctrine()
+                    ->getRepository('AppBundle:Task')
+                    ->find($id);
+
+        return $this->render('tasks/show.html.twig', array(
+            'task' => $task
+        ));
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_task")
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeTaskAction($id) {
+        $task = $this->getDoctrine()
+                    ->getRepository('AppBundle:Task')
+                    ->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($task);
+        $em->flush();
+
+        return $this->redirectToRoute('home');
     }
 }

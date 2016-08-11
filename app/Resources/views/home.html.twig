@@ -7,7 +7,9 @@
             <div class="panel-heading clearfix">
                 Tasks
                 <div class="pull-right" >
-                    <a href="{{ url('add_task') }}" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Add Task"><span class="glyphicon glyphicon-plus"></span></a>
+                    <a href="{{ url('add_task') }}" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Add Task">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
                 </div>
             </div>
             <div class="panel-body">
@@ -18,7 +20,7 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if not task.completed %}
-                                <a class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}" href="{{ url('edit_task', {'id': task.id}) }}">
+                                <a class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}" href="{{ url('show_task', {'id': task.id}) }}">
                                     {{ task.title }}
                                     <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
                                 </a>
@@ -51,10 +53,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
 {% endblock %}
