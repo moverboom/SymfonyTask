@@ -20,10 +20,12 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if not task.completed %}
-                                <a class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}" href="{{ url('show_task', {'id': task.id}) }}">
-                                    {{ task.title }}
-                                    <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
-                                </a>
+                                <div class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}">
+                                    <a href="{{ url('show_task', {'id': task.id}) }}">
+                                        {{ task.title }}
+                                        <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
+                                    </a>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -31,6 +33,7 @@
                 {% endif %}
             </div>
         </div>
+
 
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -44,7 +47,19 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if task.completed %}
-                                <a class="list-group-item" href="#">{{ task.title }}</a>
+                                <div class="list-group-item clearfix">
+                                    <div class="pull-left">
+                                        <a href="{{ url('show_task', {'id': task.id}) }}">
+                                            {{ task.title }}
+                                            <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="pull-right" data-toggle="tooltip" data-placement="bottom" title="Reschedule">
+                                        <span class="badge badge_button" data-toggle="modal" data-target="#modal_reschedule_task">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -53,4 +68,6 @@
             </div>
         </div>
     </div>
+
+    {% include 'templates/modals/reschedule_task_modal.html.twig' %}
 {% endblock %}

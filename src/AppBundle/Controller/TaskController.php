@@ -28,7 +28,7 @@ class TaskController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($task);
             $em->flush();
-
+            
             return $this->redirectToRoute('home');
         }
 
