@@ -13,7 +13,7 @@
 
                     {% if not task.completed %}
                         <a href="{{ url('edit_task', {'id': task.id}) }}" class="btn btn-sm btn-default"
-                           data-toggle="tooltip" data-placement="bottom" title="Edit Task">
+                           data-toggle="tooltip" data-placement="bottom" title="Edit">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
                         <a href="{{ url('complete_task', {'id': task.id}) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Complete">

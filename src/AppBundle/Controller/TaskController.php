@@ -74,7 +74,7 @@ class TaskController extends Controller
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showTaskAction($id, Request $request) {
+    public function showTaskAction($id) {
         $task = $this->getDoctrine()
                     ->getRepository('AppBundle:Task')
                     ->find($id);
@@ -105,6 +105,7 @@ class TaskController extends Controller
 
     /**
      * @Route("/delete/{id}", name="delete_task")
+     * @Method({"POST"})
      *
      * @param Request $request
      * @param $id
@@ -112,25 +113,20 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
+        $form->submit($request->request->get($form->getName()));
 
+        if ($form->isValid()) {
+            $task = $this->getDoctrine()
+                ->getRepository('AppBundle:Task')
+                ->find($id);
 
-        if($request->isMethod('POST')) {
-            $form->submit($request->request->get($form->getName()));
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($task);
+            $em->flush();
 
-
-            if ($form->isValid()) {
-                $task = $this->getDoctrine()
-                    ->getRepository('AppBundle:Task')
-                    ->find($id);
-
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($task);
-                $em->flush();
-
-            }
         }
-        return $this->redirectToRoute('home');
 
+        return $this->redirectToRoute('home');
     }
 
     private function createDeleteForm($taskId) {
