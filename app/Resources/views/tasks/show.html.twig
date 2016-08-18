@@ -6,16 +6,26 @@
 
 {% block body %}
     <div class="col-lg-6 col-lg-offset-3">
-        <div class="panel panel-primary">
+        <div class="panel {{ task.completed ? 'panel-success' : 'panel-primary' }}">
             <div class="panel-heading clearfix">
                 {{ task.title }}
                 <div class="pull-right" >
-                    <a href="{{ url('edit_task', {'id': task.id}) }}" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit Task">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>
-                    <a href="{{ url('complete_task', {'id': task.id}) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Complete">
-                        <span class="glyphicon glyphicon-check"></span>
-                    </a>
+
+                    {% if not task.completed %}
+                        <a href="{{ url('edit_task', {'id': task.id}) }}" class="btn btn-sm btn-default"
+                           data-toggle="tooltip" data-placement="bottom" title="Edit Task">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="{{ url('complete_task', {'id': task.id}) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Complete">
+                            <span class="glyphicon glyphicon-check"></span>
+                        </a>
+                    {% else %}
+                        <a href="{{ url('edit_task', {'id': task.id}) }}" class="btn btn-sm btn-default"
+                           data-toggle="tooltip" data-placement="bottom" title="Reschedule">
+                            <span class="glyphicon glyphicon-repeat"></span>
+                        </a>
+                    {% endif %}
+
                     <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove">
                         <div data-toggle="modal" data-target="#modal_remove_task">
                             <span class="glyphicon glyphicon-remove"></span>

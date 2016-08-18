@@ -47,6 +47,7 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if task.completed %}
+                                {% set delete_task_form = task_forms[loop.index0] %}
                                 <div class="list-group-item clearfix">
                                     <div class="pull-left">
                                         <a href="{{ url('show_task', {'id': task.id}) }}">
@@ -54,10 +55,11 @@
                                             <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
                                         </a>
                                     </div>
-                                    <div class="pull-right" data-toggle="tooltip" data-placement="bottom" title="Reschedule">
-                                        <span class="badge badge_button" data-toggle="modal" data-target="#modal_reschedule_task">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
+                                    <div class="pull-right">
+                                        {{ form_start(delete_task_form) }}
+                                            {{ form_widget(delete_task_form.id) }}
+                                            <input type="submit" value="Delete">
+                                        {{ form_end(delete_task_form) }}
                                     </div>
                                 </div>
                             {% endif %}
@@ -69,5 +71,4 @@
         </div>
     </div>
 
-    {% include 'templates/modals/reschedule_task_modal.html.twig' %}
 {% endblock %}
