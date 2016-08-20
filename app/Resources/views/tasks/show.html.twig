@@ -40,6 +40,11 @@
                 Deadline: {{ task.deadline.format('Y-m-d H:i') }}
             </div>
         </div>
+        <div class="pull-right">
+            <a href="{{ url('home') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-home"></span>
+            </a>
+        </div>
     </div>
     {% include 'templates/modals/remove_task_modal.html.twig' %}
 {% endblock %}
