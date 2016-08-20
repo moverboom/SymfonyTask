@@ -20,10 +20,42 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if not task.completed %}
-                                <a class="list-group-item {{ task.expired ? 'list-group-item-danger' : '' }}" href="{{ url('show_task', {'id': task.id}) }}">
-                                    {{ task.title }}
-                                    <div class="text-muted">{{ task.deadline.format('Y-m-d H:i') }}</div>
-                                </a>
+                                {% set delete_task_form = task_forms[loop.index0] %}
+                                <div class="list-group-item {{ task.expired ? 'list-group-item-danger' }}">
+                                    <div class="clearfix">
+                                        <div class="pull-left">
+                                            <a href="{{ url('show_task', {'id': task.id}) }}">
+                                                {{ task.title }}
+                                                <div class="text-muted">
+                                                    {{ task.deadline.format('Y-m-d H:i') }}
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button class="btn btn-sm"
+                                                    data-toggle="collapse" data-target="#task-options-id{{ task.id }}"
+                                                    aria-expanded="false" aria-controls="task-options-id{{ task.id }}">
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="task-options-id{{ task.id }}">
+                                        <a href="{{ url('complete_task', {'id': task.id}) }}"
+                                           class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Complete">
+                                            <span class="glyphicon glyphicon-check"></span>
+                                        </a>
+                                        <a href="{{ url('edit_task', {'id': task.id}) }}"
+                                           class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+                                        {{ form_start(delete_task_form, { 'attr': {'style': 'display:inline;'}}) }}
+                                        {{ form_widget(delete_task_form.id) }}
+                                        <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                        {{ form_end(delete_task_form) }}
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -31,6 +63,7 @@
                 {% endif %}
             </div>
         </div>
+
 
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -44,7 +77,38 @@
                     <div class="list-group">
                         {% for task in tasks %}
                             {% if task.completed %}
-                                <a class="list-group-item" href="#">{{ task.title }}</a>
+                                {% set delete_task_form = task_forms[loop.index0] %}
+                                <div class="list-group-item">
+                                    <div class="clearfix">
+                                        <div class="pull-left">
+                                            <a href="{{ url('show_task', {'id': task.id}) }}">
+                                                {{ task.title }}
+                                                <div class="text-muted">
+                                                    {{ task.deadline.format('Y-m-d H:i') }}
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button class="btn btn-sm"
+                                                    data-toggle="collapse" data-target="#task-options-id{{ task.id }}"
+                                                    aria-expanded="false" aria-controls="task-options-id{{ task.id }}">
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="task-options-id{{ task.id }}">
+                                        <a href="{{ url('complete_task', {'id': task.id}) }}"
+                                           class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Reschedule (Change URL)">
+                                            <span class="glyphicon glyphicon-repeat"></span>
+                                        </a>
+                                        {{ form_start(delete_task_form, { 'attr': {'style': 'display:inline;'}}) }}
+                                        {{ form_widget(delete_task_form.id) }}
+                                        <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                        {{ form_end(delete_task_form) }}
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -53,4 +117,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

@@ -10,3 +10,7 @@ ul {
     cursor: pointer;
     background-color: white;
 }
+
+.badge_button {
+    cursor: pointer;
+}
