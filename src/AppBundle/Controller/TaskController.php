@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
@@ -104,29 +105,32 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="delete_task")
+     * @Route("/delete", name="delete_task")
      * @Method({"POST"})
      *
      * @param Request $request
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function deleteTaskAction(Request $request, $id) {
-        $form = $this->createDeleteForm($id);
-        $form->submit($request->request->get($form->getName()));
+    public function deleteTaskAction(Request $request) {
+        //$form = $this->createDeleteForm($id);
+        //$form->submit($request->request->get($form->getName()));
 
-        if ($form->isValid()) {
+        $requestData = $request->request->get('task');
+
+        if ($this->isCsrfTokenValid('delete_task', $requestData['_token'])) {
             $task = $this->getDoctrine()
                 ->getRepository('AppBundle:Task')
-                ->find($id);
+                ->find($requestData['id']);
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($task);
             $em->flush();
 
+            return $this->redirectToRoute('home');
         }
 
-        return $this->redirectToRoute('home');
+        return new Response(var_dump($request->request->get('task')));
     }
 
     private function createDeleteForm($taskId) {

@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
@@ -20,17 +21,13 @@ class HomeController extends Controller
                         ->getRepository('AppBundle:Task')
                         ->findAll();
 
-        $task_forms = array_map(
-            function($task) {
-                return $this->createDeleteForm($task->getId())->createView();
-            }, $tasks
-        );
+        $csrf_token = $this->getNewCSRFToken();
 
         return $this->render(
             'home.html.twig',
             array(
                 'tasks' => $tasks,
-                'task_forms' => $task_forms)
+                'csrf_token' => $csrf_token)
         );
     }
 
@@ -42,5 +39,13 @@ class HomeController extends Controller
             ->setAction($this->generateUrl('delete_task', array('id' => $taskId)))
             ->setMethod('POST')
             ->getForm();
+    }
+
+
+    private function getNewCSRFToken() {
+        $csrfProvider = $this->get('security.csrf.token_manager');
+
+        return $csrfProvider->refreshToken('delete_task');
+
     }
 }

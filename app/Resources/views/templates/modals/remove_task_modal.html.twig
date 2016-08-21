@@ -12,9 +12,28 @@
                 The task will be permanently deleted.
             </div>
             <div class="modal-footer">
+
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a href="{{ url('delete_task', {'id':task.id}) }}" type="button" class="btn btn-danger">Remove</a>
+
+                <form name="form_delete_task" method="post" action="{{ url('delete_task') }}" style="display: inline">
+                    <input id="task_id" name="task[id]" required="required" value="0" hidden="hidden" type="text">
+                    <input id="token" name="task[_token]" value="0" type="hidden">
+                    <button data-original-title="Remove" type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="">
+                        Remove
+                    </button>
+                </form>
+
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function setTaskData(id, csrf_token) {
+        console.log('ID: ' + id + " TOKEN: " + csrf_token);
+        console.log(document.getElementById('task_id').getAttribute('value'));
+        document.getElementById('task_id').setAttribute('value', id);
+        document.getElementById('token').setAttribute('value', csrf_token);
+        console.log(document.getElementById('task_id').getAttribute('value'));
+    }
+</script>
