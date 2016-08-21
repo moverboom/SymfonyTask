@@ -118,7 +118,7 @@ class TaskController extends Controller
 
         $requestData = $request->request->get('task');
 
-        if ($this->isCsrfTokenValid('delete_task', $requestData['_token'])) {
+        if ($this->isCsrfTokenValid($this->get('security.token_storage')->getToken(), $requestData['_token'])) {
             $task = $this->getDoctrine()
                 ->getRepository('AppBundle:Task')
                 ->find($requestData['id']);
@@ -131,15 +131,5 @@ class TaskController extends Controller
         }
 
         return new Response(var_dump($request->request->get('task')));
-    }
-
-    private function createDeleteForm($taskId) {
-        return $this->createFormBuilder(array('id' => $taskId))
-            ->add('id', TextType::class,
-                array(
-                    'attr' => array('hidden' => true)))
-            ->setAction($this->generateUrl('delete_task', array('id' => $taskId)))
-            ->setMethod('POST')
-            ->getForm();
     }
 }

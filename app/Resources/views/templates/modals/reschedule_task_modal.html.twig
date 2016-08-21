@@ -1,22 +1,48 @@
-<div class="modal fade" id="modal_remove_task" aria-labelledby="modal_remove_task_label" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal_reschedule_task" aria-labelledby="modal_reschedule_task_label" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="modal_remove_task_label">Remove Task</h4>
+                <h4 class="modal-title" id="modal_reschedule_task_label">Remove Task</h4>
             </div>
             <div class="modal-body">
-                Reschedule
-                <form method="post" action="{{ url('complete_task', {'id': task.id}) }}">
 
+                <form name="form_delete_task" method="post" action="#" style="display: inline">
+                    <input id="reschedule_task_id" name="task[id]" required="required" value="0" hidden="hidden" type="text">
+                    <input id="reschedule_token" name="task[_token]" value="0" type="hidden">
+
+                    <div class="form-group">
+                        <label for="task_deadline" class="required">Deadline</label>
+                        <div class="input-group date" id="deadline-datetime">
+                            <input id="task_deadline" name="task[deadline]" required="required" class="form-control" readonly="readonly" type="text">
+                            <span class="input-group-addon">
+                                <span class="glyphicon-calendar glyphicon"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        Reschedule
+                    </button>
                 </form>
-            </div>
-            <div class="modal-footer">
+
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a href="{{ url('delete_task', {'id':task.id}) }}" type="button" class="btn btn-danger">Remove</a>
+
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#deadline-datetime').datetimepicker({
+            format:'YYYY-MM-DD HH:mm',
+            sideBySide: true,
+            allowInputToggle: true,
+            focusOnShow: false,
+            ignoreReadOnly: true
+        });
+    });
+</script>

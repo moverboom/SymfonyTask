@@ -21,7 +21,7 @@ class HomeController extends Controller
                         ->getRepository('AppBundle:Task')
                         ->findAll();
 
-        $csrf_token = $this->getNewCSRFToken();
+        $csrf_token = $this->generateCSRFToken();
 
         return $this->render(
             'home.html.twig',
@@ -31,21 +31,24 @@ class HomeController extends Controller
         );
     }
 
-    private function createDeleteForm($taskId) {
-        return $this->createFormBuilder(array('id' => $taskId))
-            ->add('id', TextType::class,
-                array(
-                    'attr' => array('hidden' => true)))
-            ->setAction($this->generateUrl('delete_task', array('id' => $taskId)))
-            ->setMethod('POST')
-            ->getForm();
-    }
-
-
-    private function getNewCSRFToken() {
+    /**
+     * Generate a new CRSF token for the current user
+     *
+     * @return \Symfony\Component\Security\Csrf\CsrfToken
+     */
+    private function generateCSRFToken() {
         $csrfProvider = $this->get('security.csrf.token_manager');
 
-        return $csrfProvider->refreshToken('delete_task');
+        return $csrfProvider->refreshToken($this->get('security.token_storage')->getToken());
 
+    }
+
+    /**
+     * @Route("/token")
+     *
+     * @return Response
+     */
+    public function getUserSecurityToken() {
+        return new Response($this->get('security.token_storage')->getToken());
     }
 }
