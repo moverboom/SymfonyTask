@@ -48,9 +48,7 @@ class TaskController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editTaskAction($id, Request $request) {
-        $task = $this->getDoctrine()
-                    ->getRepository('AppBundle:Task')
-                    ->find($id);
+        $task = $this->findTaskById($id);
 
         $form = $this->createForm(TaskType::class, $task);
 
@@ -70,15 +68,36 @@ class TaskController extends Controller
     }
 
     /**
+     * @Route("/reschedule", name="reschedule_task")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function rescheduleTaskAction(Request $request) {
+        $requestData = $request->request->get('task');
+
+        if ($this->isCsrfTokenValid($this->getUserToken(), $requestData['_token'])) {
+            $task = $this->findTaskById($requestData['id']);
+
+            $task->setCompleted(false);
+            $task->setDeadline(\DateTime::createFromFormat('Y-m-d H:i', $requestData['deadline']));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
      * @Route("/show/{id}", name="show_task")
      *
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showTaskAction($id) {
-        $task = $this->getDoctrine()
-                    ->getRepository('AppBundle:Task')
-                    ->find($id);
+        $task = $this->findTaskById($id);
 
         return $this->render('tasks/show.html.twig', array(
             'task' => $task
@@ -93,9 +112,7 @@ class TaskController extends Controller
      * @internal param Request $request
      */
     public function completeTaskAction($id) {
-        $task = $this->getDoctrine()
-                    ->getRepository('AppBundle:Task')
-                    ->find($id);
+        $task = $this->findTaskById($id);
 
         $task->setCompleted(true);
 
@@ -113,23 +130,35 @@ class TaskController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteTaskAction(Request $request) {
-        //$form = $this->createDeleteForm($id);
-        //$form->submit($request->request->get($form->getName()));
-
         $requestData = $request->request->get('task');
 
-        if ($this->isCsrfTokenValid($this->get('security.token_storage')->getToken(), $requestData['_token'])) {
-            $task = $this->getDoctrine()
-                ->getRepository('AppBundle:Task')
-                ->find($requestData['id']);
+        if ($this->isCsrfTokenValid($this->getUserToken(), $requestData['_token'])) {
+            $task = $this->findTaskById($requestData['id']);
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($task);
             $em->flush();
-
-            return $this->redirectToRoute('home');
         }
 
-        return new Response(var_dump($request->request->get('task')));
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * Find Task by ID
+     *
+     * @param $id
+     * @return Task|null|object
+     */
+    private function findTaskById($id) {
+        return $this->getDoctrine()->getRepository('AppBundle:Task')->find($id);
+    }
+
+    /**
+     * Get the security token from the current user
+     *
+     * @return null|\Symfony\Component\Security\Core\Authentication\Token\TokenInterface
+     */
+    private function getUserToken() {
+        return $this->get('security.token_storage')->getToken();
     }
 }

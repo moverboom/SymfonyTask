@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
 
-                <form name="form_delete_task" method="post" action="#" style="display: inline">
+                <form name="form_delete_task" method="post" action="{{ url('reschedule_task') }}" style="display: inline">
                     <input id="reschedule_task_id" name="task[id]" required="required" value="0" hidden="hidden" type="text">
                     <input id="reschedule_token" name="task[_token]" value="0" type="hidden">
 

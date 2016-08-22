@@ -16,7 +16,7 @@ class HomeController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function homeAction(Request $request) {
+    public function homeAction() {
         $tasks = $this->getDoctrine()
                         ->getRepository('AppBundle:Task')
                         ->findAll();
@@ -44,7 +44,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/token")
+     * @Route("/token", name="token")
      *
      * @return Response
      */
