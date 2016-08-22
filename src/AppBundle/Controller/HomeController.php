@@ -2,12 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\TaskType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
@@ -17,6 +14,9 @@ class HomeController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function homeAction() {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Please login');
+
+
         $tasks = $this->getDoctrine()
                         ->getRepository('AppBundle:Task')
                         ->findAll();
