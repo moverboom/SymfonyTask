@@ -22,14 +22,15 @@ security:
 
         main:
             anonymous: ~
-            pattern: ^/
             form_login:
                 login_path: login
                 check_path: login
+                csrf_token_generator: security.csrf.token_manager
             provider: user_db_provider
             logout:
                 path: /logout
                 target: /
+
             # activate different ways to authenticate
 
             # http_basic: ~

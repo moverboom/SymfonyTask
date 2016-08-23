@@ -9,9 +9,50 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * @Security("has_role('ROLE_USER')")
+ * @Route("/task")
+ *
+ * Class TaskController
+ * @package AppBundle\Controller
+ */
 class TaskController extends Controller
 {
+
+    /**
+     * @Route("", name="home")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function homeAction() {
+        $tasks = $this->getDoctrine()
+            ->getRepository('AppBundle:Task')
+            ->findAll();
+
+        $csrf_token = $this->generateCSRFToken();
+
+        return $this->render(
+            'home.html.twig',
+            array(
+                'tasks' => $tasks,
+                'csrf_token' => $csrf_token)
+        );
+    }
+
+    /**
+     * Generate a new CRSF token for the current user
+     *
+     * @return \Symfony\Component\Security\Csrf\CsrfToken
+     */
+    private function generateCSRFToken() {
+        $csrfProvider = $this->get('security.csrf.token_manager');
+
+        return $csrfProvider->refreshToken($this->get('security.token_storage')->getToken());
+
+    }
+
     /**
      * @Route("/add", name="add_task")
      *

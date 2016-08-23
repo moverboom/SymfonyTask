@@ -5,12 +5,26 @@
 {% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.plainPassword.first) }}
-    {{ form_row(form.plainPassword.second) }}
-
-    <button type="submit">Register!</button>
-    {{ form_end(form) }}
+    <div class="well col-lg-6 col-lg-offset-3">
+    <p class="lead">Register</p>
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.plainPassword.first) }}
+                {{ form_widget(form.plainPassword.first) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.plainPassword.second) }}
+                {{ form_widget(form.plainPassword.second) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Register!</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

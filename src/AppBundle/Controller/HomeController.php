@@ -9,38 +9,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class HomeController extends Controller
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="index")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function homeAction() {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Please login');
+    public function indexAction() {
 
+        if($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('home');
+        }
 
-        $tasks = $this->getDoctrine()
-                        ->getRepository('AppBundle:Task')
-                        ->findAll();
-
-        $csrf_token = $this->generateCSRFToken();
-
-        return $this->render(
-            'home.html.twig',
-            array(
-                'tasks' => $tasks,
-                'csrf_token' => $csrf_token)
-        );
-    }
-
-    /**
-     * Generate a new CRSF token for the current user
-     *
-     * @return \Symfony\Component\Security\Csrf\CsrfToken
-     */
-    private function generateCSRFToken() {
-        $csrfProvider = $this->get('security.csrf.token_manager');
-
-        return $csrfProvider->refreshToken($this->get('security.token_storage')->getToken());
-
+        return $this->render('index.html.twig');
     }
 
     /**
