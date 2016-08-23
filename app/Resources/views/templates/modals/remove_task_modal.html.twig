@@ -14,10 +14,9 @@
             <div class="modal-footer">
 
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
                 <form name="form_delete_task" method="post" action="{{ url('delete_task') }}" style="display: inline">
                     <input id="remove_task_id" name="task[id]" required="required" value="0" hidden="hidden" type="text">
-                    <input type="hidden" name="task[_token]" value="{{ csrf_token('remove_task') }}" />
+                    <input id="remove_task_token" type="hidden" name="task[_token]" value="{{ csrf_token(['remove_task_', app.user.id] | join) }}" />
                     <button type="submit" class="btn btn-danger">
                         Remove
                     </button>

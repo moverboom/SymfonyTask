@@ -102,7 +102,7 @@ class TaskController extends Controller
     public function rescheduleTaskAction(Request $request) {
         $requestData = $request->request->get('task');
 
-        if ($this->isCsrfTokenValid('reschedule_task', $requestData['_token'])) {
+        if ($this->isCsrfTokenValid('reschedule_task_' . $this->getUser()->getId(), $requestData['_token'])) {
             $task = $this->findTaskById($requestData['id']);
 
             $task->setCompleted(false);
@@ -154,10 +154,10 @@ class TaskController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function deleteTaskAction(Request $request) {
+    public function removeTaskAction(Request $request) {
         $requestData = $request->request->get('task');
 
-        if ($this->isCsrfTokenValid('remove_task', $requestData['_token'])) {
+        if ($this->isCsrfTokenValid('remove_task_' . $this->getUser()->getId(), $requestData['_token'])) {
             $task = $this->findTaskById($requestData['id']);
 
             $em = $this->getDoctrine()->getManager();
