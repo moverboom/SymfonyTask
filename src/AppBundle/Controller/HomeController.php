@@ -21,13 +21,4 @@ class HomeController extends Controller
 
         return $this->render('index.html.twig');
     }
-
-    /**
-     * @Route("/token", name="token")
-     *
-     * @return Response
-     */
-    public function getUserSecurityToken() {
-        return new Response($this->get('security.token_storage')->getToken());
-    }
 }

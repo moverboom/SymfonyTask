@@ -47,7 +47,7 @@
                                            class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>
-                                        <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove" onclick="setTaskDataForRemove('{{ task.id }}', '{{ csrf_token }}');">
+                                        <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove" onclick="setTaskDataForRemove({{ task.id }});">
                                             <div data-toggle="modal" data-target="#modal_remove_task">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                             </div>
@@ -95,13 +95,13 @@
                                     </div>
                                     <div class="collapse" id="task-options-id{{ task.id }}">
 
-                                        <div class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Reschedule" onclick="setTaskDataForReschedule('{{ task.id }}', '{{ csrf_token }}');">
+                                        <div class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Reschedule" onclick="setTaskDataForReschedule({{ task.id }});">
                                             <div data-toggle="modal" data-target="#modal_reschedule_task">
                                                 <span class="glyphicon glyphicon-repeat"></span>
                                             </div>
                                         </div>
 
-                                        <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove" onclick="setTaskDataForRemove('{{ task.id }}', '{{ csrf_token }}');">
+                                        <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove" onclick="setTaskDataForRemove({{ task.id }});">
                                             <div data-toggle="modal" data-target="#modal_remove_task">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                             </div>

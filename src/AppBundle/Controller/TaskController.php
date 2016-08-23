@@ -31,26 +31,11 @@ class TaskController extends Controller
             ->getRepository('AppBundle:Task')
             ->findAll();
 
-        $csrf_token = $this->generateCSRFToken();
-
         return $this->render(
             'home.html.twig',
             array(
-                'tasks' => $tasks,
-                'csrf_token' => $csrf_token)
+                'tasks' => $tasks)
         );
-    }
-
-    /**
-     * Generate a new CRSF token for the current user
-     *
-     * @return \Symfony\Component\Security\Csrf\CsrfToken
-     */
-    private function generateCSRFToken() {
-        $csrfProvider = $this->get('security.csrf.token_manager');
-
-        return $csrfProvider->refreshToken($this->get('security.token_storage')->getToken());
-
     }
 
     /**
@@ -117,7 +102,7 @@ class TaskController extends Controller
     public function rescheduleTaskAction(Request $request) {
         $requestData = $request->request->get('task');
 
-        if ($this->isCsrfTokenValid($this->getUserToken(), $requestData['_token'])) {
+        if ($this->isCsrfTokenValid('reschedule_task', $requestData['_token'])) {
             $task = $this->findTaskById($requestData['id']);
 
             $task->setCompleted(false);
@@ -172,7 +157,7 @@ class TaskController extends Controller
     public function deleteTaskAction(Request $request) {
         $requestData = $request->request->get('task');
 
-        if ($this->isCsrfTokenValid($this->getUserToken(), $requestData['_token'])) {
+        if ($this->isCsrfTokenValid('remove_task', $requestData['_token'])) {
             $task = $this->findTaskById($requestData['id']);
 
             $em = $this->getDoctrine()->getManager();
@@ -191,14 +176,5 @@ class TaskController extends Controller
      */
     private function findTaskById($id) {
         return $this->getDoctrine()->getRepository('AppBundle:Task')->find($id);
-    }
-
-    /**
-     * Get the security token from the current user
-     *
-     * @return null|\Symfony\Component\Security\Core\Authentication\Token\TokenInterface
-     */
-    private function getUserToken() {
-        return $this->get('security.token_storage')->getToken();
     }
 }

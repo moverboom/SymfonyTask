@@ -17,7 +17,7 @@
 
                 <form name="form_delete_task" method="post" action="{{ url('delete_task') }}" style="display: inline">
                     <input id="remove_task_id" name="task[id]" required="required" value="0" hidden="hidden" type="text">
-                    <input id="remove_token" name="task[_token]" value="0" type="hidden">
+                    <input type="hidden" name="task[_token]" value="{{ csrf_token('remove_task') }}" />
                     <button type="submit" class="btn btn-danger">
                         Remove
                     </button>
@@ -29,16 +29,15 @@
 </div>
 
 <script type="text/javascript">
-    function setTaskDataForRemove(id, csrf_token) {
-        setTaskData(id, csrf_token, 'remove');
+    function setTaskDataForRemove(id) {
+        setTaskData(id, 'remove');
     }
 
-    function setTaskDataForReschedule(id, csrf_token) {
-        setTaskData(id, csrf_token, 'reschedule');
+    function setTaskDataForReschedule(id) {
+        setTaskData(id, 'reschedule');
     }
 
-    function setTaskData(id, csrf_token, type) {
+    function setTaskData(id, type) {
         document.getElementById(type + '_task_id').setAttribute('value', id);
-        document.getElementById(type + '_token').setAttribute('value', csrf_token);
     }
 </script>
