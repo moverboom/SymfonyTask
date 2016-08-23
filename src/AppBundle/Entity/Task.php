@@ -65,6 +65,14 @@ class Task
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="user", inversedBy="tasks")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
+     * @var User
+     */
+    private $user;
+
 
     /**
      * Get id
@@ -241,5 +249,39 @@ class Task
 
     public function getCurrentDateTime() {
         return new DateTime();
+    }
+
+    /**
+     * Get completed
+     *
+     * @return boolean
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Task
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\user
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

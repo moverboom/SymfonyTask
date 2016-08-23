@@ -20,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class TaskController extends Controller
 {
-
     /**
      * @Route("", name="home")
      *
@@ -29,7 +28,9 @@ class TaskController extends Controller
     public function homeAction() {
         $tasks = $this->getDoctrine()
             ->getRepository('AppBundle:Task')
-            ->findAll();
+            ->findBy(array(
+                'user' => $this->getUser()
+            ));
 
         return $this->render(
             'home.html.twig',
@@ -52,6 +53,7 @@ class TaskController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($task);
             $em->flush();
