@@ -2,12 +2,12 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @ORM\Table(name="users")

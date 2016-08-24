@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-
 class SecurityController extends Controller
 {
     /**
@@ -18,6 +17,12 @@ class SecurityController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loginAction(Request $request) {
+        //Find a better solution for this
+        //See registerAction as well
+        if($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('home');
+        }
+
         $authUtils = $this->get('security.authentication_utils');
 
         $lastError = $authUtils->getLastAuthenticationError();
@@ -38,6 +43,10 @@ class SecurityController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function registerAction(Request $request) {
+        if($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('home');
+        }
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
