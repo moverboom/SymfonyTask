@@ -26,11 +26,7 @@ class TaskController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function homeAction() {
-        $tasks = $this->getDoctrine()
-            ->getRepository('AppBundle:Task')
-            ->findBy(array(
-                'user' => $this->getUser()
-            ));
+        $tasks = $this->getUser()->getTasks();
 
         return $this->render(
             'home.html.twig',
@@ -177,6 +173,6 @@ class TaskController extends Controller
      * @return Task|null|object
      */
     private function findTaskById($id) {
-        return $this->getDoctrine()->getRepository('AppBundle:Task')->find($id);
+        return $this->getUser()->getTaskById($id);
     }
 }

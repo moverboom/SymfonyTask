@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -183,6 +185,24 @@ class User implements UserInterface, \Serializable
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Get Task by Id
+     *
+     * Assuming the id is unique as this is the PK in the database
+     *
+     * @param $taskId
+     * @return Task|null
+     */
+    public function getTaskById($taskId) {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('id', $taskId));
+        $criteria->setMaxResults(1);
+
+        $result = $this->tasks->matching($criteria);
+
+        return $result->first();
     }
 
     /**
