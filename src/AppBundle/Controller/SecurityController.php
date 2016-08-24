@@ -52,6 +52,8 @@ class SecurityController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->sendRegisterMail($user);
+
             return $this->redirectToRoute('home');
         }
 
@@ -61,5 +63,19 @@ class SecurityController extends Controller
                 'form' => $form->createView()
             )
         );
+    }
+
+    private function sendRegisterMail(User $user) {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Welcome ' . $user->getUsername())
+            ->setFrom('mail@taskmanager.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'templates/mails/mail_registered.html.twig',
+                    array('name' => $user->getUsername())
+                ), 'text/html'
+            );
+        $this->get('mailer')->send($message);
     }
 }
