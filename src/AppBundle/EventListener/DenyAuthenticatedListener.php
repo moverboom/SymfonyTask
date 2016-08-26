@@ -41,7 +41,6 @@ class DenyAuthenticatedListener
 
                 $redirectUrl = '/';
 
-                //redirect
                 $filterControllerEvent->setController(function() use ($redirectUrl) {
                     return new RedirectResponse($redirectUrl);
                 });
