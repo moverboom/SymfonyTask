@@ -7,3 +7,8 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.listener.denyauthenticatedlistener:
+        class: AppBundle\EventListener\DenyAuthenticatedListener
+        arguments: ["@security.authorization_checker"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

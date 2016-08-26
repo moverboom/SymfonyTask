@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("/task")
  *
  * Class TaskController

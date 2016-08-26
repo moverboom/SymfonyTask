@@ -5,10 +5,12 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Controller\DenyAuthenticatedController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-class SecurityController extends Controller
+class SecurityController extends Controller implements DenyAuthenticatedController
 {
     /**
      * @Route("/login", name="login")
@@ -17,18 +19,11 @@ class SecurityController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loginAction(Request $request) {
-        //Find a better solution for this
-        //See registerAction as well
-        if($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home');
-        }
-
         $authUtils = $this->get('security.authentication_utils');
 
         $lastError = $authUtils->getLastAuthenticationError();
 
         $lastUsername = $authUtils->getLastUsername();
-
         return $this->render('security/login.html.twig',
             array(
                 'last_username' => $lastUsername,
@@ -43,10 +38,6 @@ class SecurityController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function registerAction(Request $request) {
-        if($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home');
-        }
-
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
