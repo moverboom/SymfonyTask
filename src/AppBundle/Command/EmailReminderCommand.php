@@ -23,5 +23,7 @@ class EmailReminderCommand extends ContainerAwareCommand
         $emailController->sendAllEmailReminders();
 
         $output->writeln('Done');
+
+        return;
     }
 }

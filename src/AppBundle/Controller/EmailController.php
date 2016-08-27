@@ -5,6 +5,13 @@ namespace AppBundle\Controller;
 use Swift_Message;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
+/**
+ * Class should probably be renamed and moved to another folder
+ * since it is not a controller
+ *
+ * Class EmailController
+ * @package AppBundle\Controller
+ */
 class EmailController
 {
     private $engine;
