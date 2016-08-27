@@ -7,8 +7,7 @@ use AuthBundle\Entity\User;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
- * Class should probably be renamed and moved to another folder
- * since it is not a controller
+ * Class should probably be renamed since it is not a generic email sender
  *
  * Class EmailSender
  * @package EmailBundle\Service
@@ -32,12 +31,13 @@ class EmailSender
             foreach ($tasks as $task) {
                 $taskTitle = $task['task_title'];
                 $taskDeadline = $task['task_deadline'];
-                $this->sendEmailReminder($sendTo, $taskTitle, $taskDeadline);
+                $message = $this->createEmailMessage($sendTo, $taskTitle, $taskDeadline);
+                $this->mailer->send($message);
             }
         }
     }
 
-    private function sendEmailReminder($to, $taskTitle, $taskDeadline) {
+    private function createEmailMessage($to, $taskTitle, $taskDeadline) {
         $message = Swift_Message::newInstance()
             ->setSubject('You have an upcomming task today!')
             ->setFrom('mail@taskmanager.com')
@@ -50,6 +50,6 @@ class EmailSender
                         'task_deadline' => $taskDeadline)
                 ), 'text/html'
             );
-        $this->mailer->send($message);
+        return $message;
     }
 }

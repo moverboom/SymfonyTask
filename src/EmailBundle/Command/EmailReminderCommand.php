@@ -20,17 +20,10 @@ class EmailReminderCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Sending email reminders...');
-
-        $userRepo = $this->getContainer()->get('doctrine')->getRepository('AuthBundle:User');
-
         $taskArray = $this->fetchUpcommingTasks();
-
         $emailSender = $this->getContainer()->get('app.email.sender');
-
         $emailSender->sendEmailReminders($taskArray);
-
         $output->writeln('Done');
-
         return;
     }
 
