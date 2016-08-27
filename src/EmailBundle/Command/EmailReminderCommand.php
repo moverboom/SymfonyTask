@@ -54,7 +54,7 @@ class EmailReminderCommand extends ContainerAwareCommand
         $resultArray = [];
 
         foreach ($tasks as $task) {
-            $resultArray[$task->getUser()->getEmail()][] = ['task_title' => $task->getTitle(), 'task_deadline' => $task->getDeadline()->format('H:i')];
+            $resultArray[$task->getUser()->getEmail()][] = ['task_title' => $task->getTitle(), 'task_deadline' => $task->getDeadline()->format('Y-m-d H:i')];
         }
 
         return $resultArray;
