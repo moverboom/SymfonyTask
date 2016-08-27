@@ -206,6 +206,19 @@ class User implements UserInterface, \Serializable
         return $result->first();
     }
 
+    public function getUpcommingTasks() {
+        $datetime = new \DateTime();
+        $datetime->add(new \DateInterval('P1D'));
+
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->lte('deadline', $datetime));
+        //$criteria->where(Criteria::expr()->eq('id', '1'));
+
+        $result = $this->tasks->matching($criteria);
+
+        return $result;
+    }
+
     /**
      * Add task
      *

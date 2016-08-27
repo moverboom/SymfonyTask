@@ -721,8 +721,11 @@
 </style>
 <div class="container well" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin-right: auto; margin-left: auto; width: 1170px; min-height: 20px; margin-bottom: 20px; border-radius: 4px; background-color: #f5f5f5; padding: 19px; border: 1px solid #e3e3e3;">
     <div class="col-lg-6 col-lg-offset-3" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; position: relative; min-height: 1px; padding-right: 15px; padding-left: 15px; float: left; width: 50%; margin-left: 25%;">
-        <h1 style="font-size: 36px; color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: inherit; font-weight: 500; line-height: 1.1; margin: 20px 0 10px;">Test Reminder</h1>
-
+        <h1 style="font-size: 36px; color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: inherit; font-weight: 500; line-height: 1.1; margin: 20px 0 10px;">Task: {{ task_title }}</h1>
+        <p>
+            The deadline for this task is set today at {{ task_deadline }}. <br>
+            Make sure you finish it in time!
+        </p>
     </div>
 </div>
 </body>
