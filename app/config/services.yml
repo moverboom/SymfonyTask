@@ -14,4 +14,4 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
     app.email.controller:
         class: AppBundle\Controller\EmailController
-        arguments: ["@templating.engine.twig", "@swiftmailer.mailer"]
+        arguments: ["@templating.engine.twig", "@swiftmailer.mailer.mailer_reminders"]

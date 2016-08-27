@@ -64,10 +64,23 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    port:      "%mailer_port%"
-    auth_mode: "%mailer_auth_mode%"
-    spool:     { type: memory }
+    default_mailer: mailer
+    mailers:
+        mailer:
+            spool: { type: memory }
+            transport: '%mailer_transport%'
+            host:      '%mailer_host%'
+            username:  '%mailer_user%'
+            password:  '%mailer_password%'
+            port:      '%mailer_port%'
+            auth_mode: '%mailer_auth_mode%'
+        mailer_reminders:
+            spool:
+                type: file
+                path: '%kernel.root_dir%/reminder_spool'
+            transport: '%mailer_transport%'
+            host:      '%mailer_host%'
+            username:  '%mailer_user%'
+            password:  '%mailer_password%'
+            port:      '%mailer_port%'
+            auth_mode: '%mailer_auth_mode%'
