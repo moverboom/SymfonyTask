@@ -8,10 +8,10 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     app.listener.denyauthenticatedlistener:
-        class: AppBundle\EventListener\DenyAuthenticatedListener
+        class: AuthBundle\EventListener\DenyAuthenticatedListener
         arguments: ["@security.authorization_checker"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-    app.email.controller:
-        class: AppBundle\Controller\EmailController
+    app.email.sender:
+        class: EmailBundle\Service\EmailSender
         arguments: ["@templating.engine.twig", "@swiftmailer.mailer.mailer_reminders"]

@@ -2,7 +2,7 @@
 # http://symfony.com/doc/current/book/security.html
 security:
     encoders:
-        AppBundle\Entity\User:
+        AuthBundle\Entity\User:
             algorithm: bcrypt
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
@@ -11,7 +11,7 @@ security:
             memory: ~
         user_db_provider:
             entity:
-                class: AppBundle:User
+                class: AuthBundle:User
                 property: username
 
     firewalls:

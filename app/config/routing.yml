@@ -1,3 +1,13 @@
+auth:
+    resource: "@AuthBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+task:
+    resource: "@TaskBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

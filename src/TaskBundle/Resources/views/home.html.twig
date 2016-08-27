@@ -1,0 +1,123 @@
+{%  extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-6 col-lg-offset-3">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading clearfix">
+                Tasks
+                <div class="pull-right" >
+                    <a href="{{ url('add_task') }}" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Add Task">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+                {% if tasks is empty %}
+                    <p>You are all done!</p>
+                {% else %}
+
+                    <div class="list-group">
+                        {% for task in tasks %}
+                            {% if not task.completed %}
+                                <div class="list-group-item {{ task.expired ? 'list-group-item-danger' }}">
+                                    <div class="clearfix">
+                                        <div class="pull-left">
+                                            <a href="{{ url('show_task', {'id': task.id}) }}">
+                                                {{ task.title }}
+                                                <div class="text-muted">
+                                                    {{ task.deadline.format('Y-m-d H:i') }}
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button class="btn btn-sm"
+                                                    data-toggle="collapse" data-target="#task-options-id{{ task.id }}"
+                                                    aria-expanded="false" aria-controls="task-options-id{{ task.id }}">
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="task-options-id{{ task.id }}">
+                                        <a href="{{ url('complete_task', {'id': task.id}) }}"
+                                           class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Complete">
+                                            <span class="glyphicon glyphicon-check"></span>
+                                        </a>
+                                        <a href="{{ url('edit_task', {'id': task.id}) }}"
+                                           class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+                                        <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove" onclick="setTaskDataForRemove({{ task.id }});">
+                                            <div data-toggle="modal" data-target="#modal_remove_task">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Tasks
+            </div>
+            <div class="panel-body">
+                {% if tasks is empty %}
+                    <p>You are all done!</p>
+                {% else %}
+
+                    <div class="list-group">
+                        {% for task in tasks %}
+                            {% if task.completed %}
+                                <div class="list-group-item">
+                                    <div class="clearfix">
+                                        <div class="pull-left">
+                                            <a href="{{ url('show_task', {'id': task.id}) }}">
+                                                {{ task.title }}
+                                                <div class="text-muted">
+                                                    {{ task.deadline.format('Y-m-d H:i') }}
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button class="btn btn-sm"
+                                                    data-toggle="collapse" data-target="#task-options-id{{ task.id }}"
+                                                    aria-expanded="false" aria-controls="task-options-id{{ task.id }}">
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="task-options-id{{ task.id }}">
+
+                                        <div class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Reschedule" onclick="setTaskDataForReschedule({{ task.id }});">
+                                            <div data-toggle="modal" data-target="#modal_reschedule_task">
+                                                <span class="glyphicon glyphicon-repeat"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove" onclick="setTaskDataForRemove({{ task.id }});">
+                                            <div data-toggle="modal" data-target="#modal_remove_task">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'TaskBundle:modals:remove_task_modal.html.twig' %}
+    {% include 'TaskBundle:modals:reschedule_task_modal.html.twig' %}
+
+{% endblock %}
