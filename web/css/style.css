@@ -4,7 +4,8 @@ ul {
     list-style: none;
 }
 
-#task_deadline {
+#task_deadline,
+#task_remindAt {
     cursor: pointer;
     background-color: white;
 }

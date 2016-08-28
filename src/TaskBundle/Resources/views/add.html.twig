@@ -30,11 +30,20 @@
                     </div>
                     <div class="form-group">
                         {{ form_label(form.deadline) }}
-                        <div class='input-group date' id='deadline-datetime'>
+                        <div class='input-group date task-datetime-fields' id='deadline-datetime'>
                             {{ form_widget(form.deadline) }}
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.remindAt) }}
+                        <div class='input-group date task-datetime-fields' id='remindat-datetime'>
+                            {{ form_widget(form.remindAt) }}
+                            <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                         </div>
                     </div>
                 {{ form_end(form) }}
@@ -51,9 +60,20 @@
             $('#deadline-datetime').datetimepicker({
                 format:'YYYY-MM-DD HH:mm',
                 sideBySide: true,
-                allowInputToggle: true,
-                focusOnShow: false,
-                ignoreReadOnly: true
+                focusOnShow: false
+            });
+            $('#remindat-datetime').datetimepicker({
+                format:'YYYY-MM-DD HH:mm',
+                useCurrent: false,
+                showClear: true,
+                sideBySide: true,
+                focusOnShow: false
+            });
+            $("#deadline-datetime").on("dp.change", function (e) {
+                $('#remindat-datetime').data("DateTimePicker").minDate(e.date);
+            });
+            $("#remindat-datetime").on("dp.change", function (e) {
+                $('#deadline-datetime').data("DateTimePicker").maxDate(e.date);
             });
         });
     </script>

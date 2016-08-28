@@ -20,6 +20,13 @@ class TaskType extends AbstractType
             ->add('description', TextType::class, array(
                 'attr' => array('class' => 'form-control')
             ))
+            ->add('remindAt', DateTimeType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm',
+                'html5' => false,
+                'attr' => array('class' => 'form-control',
+                    'readonly' => 'readonly',)
+            ))
             ->add('deadline', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd HH:mm',

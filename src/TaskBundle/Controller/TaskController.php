@@ -177,39 +177,4 @@ class TaskController extends Controller
     private function findTaskById($id) {
         return $this->getUser()->getTaskById($id);
     }
-
-    /**
-     * @Route("/test")
-     *
-     * @return Response
-     */
-    public function taskTesterAction() {
-        $datetimeEnd = new \DateTime();
-        $datetimeEnd->add(new \DateInterval('P1D'));
-        $datetimeStart = new \DateTime();
-
-        $repo = $this->getDoctrine()->getRepository('TaskBundle:Task');
-        $qb = $repo->createQueryBuilder('t');
-
-        $qb->where($qb->expr()->between('t.deadline', ':after', ':before'));
-        $qb->setParameter('after', $datetimeStart, \Doctrine\DBAL\Types\Type::DATETIME);
-        $qb->setParameter('before', $datetimeEnd, \Doctrine\DBAL\Types\Type::DATETIME);
-        $query = $qb->getQuery();
-
-        $tasks = $query->getResult();
-
-        $resultArray = [];
-
-        foreach ($tasks as $task) {
-            $resultArray[$task->getUser()->getEmail()][] = ['task_title' => $task->getTitle(), 'task_deadline' => $task->getUser()->getEmail()];
-        }
-
-        //return new Response(var_dump($resultArray));
-        $users = array_keys($resultArray);
-//        foreach ($resultArray as $user) {
-//            $users[] = key($user);
-//        }
-
-        return new Response(var_dump($users));
-    }
 }

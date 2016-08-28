@@ -87,13 +87,18 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setUsername($username)
+    public function setUsername(string $username)
     {
         $this->username = $username;
 
         return $this;
     }
 
+    /**
+     * Get password
+     *
+     * @return string
+     */
     public function getPassword()
     {
         return $this->password;
@@ -106,13 +111,18 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
 
         return $this;
     }
 
+    /**
+     * Get salt
+     *
+     * @return null
+     */
     public function getSalt()
     {
         // you *may* need a real salt depending on your encoder
@@ -120,14 +130,27 @@ class User implements UserInterface, \Serializable
         return null;
     }
 
+    /**
+     * Get plaintest password
+     *
+     * @return string
+     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
     }
 
-    public function setPlainPassword($password)
+    /**
+     * Set plaintext password
+     *
+     * @param string $password
+     * @return $this
+     */
+    public function setPlainPassword(string $password)
     {
         $this->plainPassword = $password;
+
+        return $this;
     }
 
     /**
@@ -147,7 +170,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
 
@@ -196,7 +219,8 @@ class User implements UserInterface, \Serializable
      * @param $taskId
      * @return \TaskBundle\Entity\Task|null
      */
-    public function getTaskById($taskId) {
+    public function getTaskById(int $taskId)
+    {
         $criteria = Criteria::create();
         $criteria->where(Criteria::expr()->eq('id', $taskId));
         $criteria->setMaxResults(1);
@@ -204,19 +228,6 @@ class User implements UserInterface, \Serializable
         $result = $this->tasks->matching($criteria);
 
         return $result->first();
-    }
-
-    public function getUpcommingTasks() {
-        $datetime = new \DateTime();
-        $datetime->add(new \DateInterval('P1D'));
-
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->lte('deadline', $datetime));
-        //$criteria->where(Criteria::expr()->eq('id', '1'));
-
-        $result = $this->tasks->matching($criteria);
-
-        return $result;
     }
 
     /**
@@ -243,6 +254,11 @@ class User implements UserInterface, \Serializable
         $this->tasks->removeElement($task);
     }
 
+    /**
+     * Get assigned roles
+     *
+     * @return array
+     */
     public function getRoles()
     {
         return array('ROLE_USER');

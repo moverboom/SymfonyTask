@@ -48,6 +48,20 @@ class Task
     /**
      * @var \DateTime
      *
+     * @ORM\Column(name="remindAt", type="datetime", nullable=true)
+     */
+    private $remindAt = null;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="reminded", type="boolean")
+     */
+    private $reminded = false;
+
+    /**
+     * @var \DateTime
+     *
      * @ORM\Column(name="deadline", type="datetime")
      */
     private $deadline;
@@ -90,7 +104,8 @@ class Task
      *
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
@@ -98,11 +113,15 @@ class Task
      * Set title
      *
      * @param $title string
+     * @return $this
      */
-    public function setTitle($title) {
-        if(is_string($title)) {
+    public function setTitle($title)
+    {
+        if (is_string($title)) {
             $this->title = $title;
         }
+
+        return $this;
     }
 
     /**
@@ -130,11 +149,12 @@ class Task
     }
 
     /**
-     * Get completed
+     * Is completed
      *
      * @return bool
      */
-    public function isCompleted() {
+    public function isCompleted()
+    {
         return $this->completed;
     }
 
@@ -145,10 +165,44 @@ class Task
      *
      * @return Task
      */
-    public function setCompleted($completed) {
+    public function setCompleted($completed)
+    {
         $this->completed = $completed;
 
         return $this;
+    }
+
+    /**
+     * Get remindAt
+     *
+     * @return DateTime
+     */
+    public function getRemindAt()
+    {
+        return $this->remindAt;
+    }
+
+    /**
+     * Set remindAt
+     *
+     * @param DateTime $remindAt
+     * @return $this
+     */
+    public function setRemindAt(DateTime $remindAt = null)
+    {
+        $this->remindAt = $remindAt;
+
+        return $this;
+    }
+
+    /**
+     * Is reminded
+     *
+     * @return bool
+     */
+    public function isReminded()
+    {
+        return $this->reminded;
     }
 
     /**
@@ -248,7 +302,8 @@ class Task
         $this->updatedAt = $this->getCurrentDateTime();
     }
 
-    public function getCurrentDateTime() {
+    private function getCurrentDateTime()
+    {
         return new DateTime();
     }
 

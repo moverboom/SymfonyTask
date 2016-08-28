@@ -20,36 +20,26 @@ class EmailReminderCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Sending email reminders...');
-        $taskArray = $this->fetchUpcommingTasks();
+        $taskArray = $this->fetchRemindingTasks();
         $emailSender = $this->getContainer()->get('app.email.sender');
         $emailSender->sendEmailReminders($taskArray);
         $output->writeln('Done');
         return;
     }
 
-    private function fetchUpcommingTasks() {
+    private function fetchRemindingTasks()
+    {
         $doctrine = $this->getContainer()->get('doctrine');
-
-        $datetimeEnd = new \DateTime();
-        $datetimeEnd->add(new \DateInterval('P1D'));
-        $datetimeStart = new \DateTime();
-
         $repo = $doctrine->getRepository('TaskBundle:Task');
-        $qb = $repo->createQueryBuilder('t');
+        $qb = $repo->createQueryBuilder('task');
+        $qb->where($qb->expr()->andX(
+            $qb->expr()->eq('task.reminded', 0),
+            $qb->expr()->lte('task.remindAt', ':currentDateTime')
+        ))->setParameter('currentDateTime', new \DateTime(), \Doctrine\DBAL\Types\Type::DATETIME);
 
-        $qb->where($qb->expr()->between('t.deadline', ':after', ':before'));
-        $qb->setParameter('after', $datetimeStart, \Doctrine\DBAL\Types\Type::DATETIME);
-        $qb->setParameter('before', $datetimeEnd, \Doctrine\DBAL\Types\Type::DATETIME);
-        $query = $qb->getQuery();
+        $tasks = $qb->getQuery()->getResult();
 
-        $tasks = $query->getResult();
-
-        $resultArray = [];
-
-        foreach ($tasks as $task) {
-            $resultArray[$task->getUser()->getEmail()][] = ['task_title' => $task->getTitle(), 'task_deadline' => $task->getDeadline()->format('Y-m-d H:i')];
-        }
-
-        return $resultArray;
+        return $tasks;
     }
+
 }
