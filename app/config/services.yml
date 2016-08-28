@@ -12,6 +12,6 @@ services:
         arguments: ["@security.authorization_checker"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-    app.email.sender:
-        class: EmailBundle\Service\EmailSender
+    app.email.reminder.sender:
+        class: EmailBundle\Service\EmailReminderSender
         arguments: ["@templating.engine.twig", "@swiftmailer.mailer.mailer_reminders"]

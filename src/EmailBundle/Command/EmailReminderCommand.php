@@ -8,6 +8,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
+/**
+ * This command fetches all tasks for which a reminder needs to be send
+ * and sends it to the user's email.
+ * Called as -> email:send:reminders
+ *
+ * Class EmailReminderCommand
+ * @package EmailBundle\Command
+ */
 class EmailReminderCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -21,12 +29,18 @@ class EmailReminderCommand extends ContainerAwareCommand
     {
         $output->writeln('Sending email reminders...');
         $taskArray = $this->fetchRemindingTasks();
-        $emailSender = $this->getContainer()->get('app.email.sender');
+        $emailSender = $this->getContainer()->get('app.email.reminder.sender');
         $emailSender->sendEmailReminders($taskArray);
+        $this->setTasksReminded($taskArray);
         $output->writeln('Done');
         return;
     }
 
+    /**
+     * Fetch all tasks for which a reminder needs to be send
+     *
+     * @return array
+     */
     private function fetchRemindingTasks()
     {
         $doctrine = $this->getContainer()->get('doctrine');
@@ -40,6 +54,20 @@ class EmailReminderCommand extends ContainerAwareCommand
         $tasks = $qb->getQuery()->getResult();
 
         return $tasks;
+    }
+
+    /**
+     * Mark all tasks in array as reminded
+     *
+     * @param array $tasks
+     */
+    private function setTasksReminded(array $tasks) {
+        $doctrine = $this->getContainer()->get('doctrine');
+        foreach ($tasks as $task) {
+            $task->setReminded(true);
+
+        }
+        $doctrine->getManager()->flush();
     }
 
 }

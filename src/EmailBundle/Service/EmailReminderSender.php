@@ -9,10 +9,10 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 /**
  * Class should probably be renamed since it is not a generic email sender
  *
- * Class EmailSender
+ * Class EmailReminderSender
  * @package EmailBundle\Service
  */
-class EmailSender
+class EmailReminderSender
 {
     private $engine;
     private $mailer;

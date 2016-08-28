@@ -205,6 +205,10 @@ class Task
         return $this->reminded;
     }
 
+    public function setReminded($reminded) {
+        $this->reminded = $reminded;
+    }
+
     /**
      * Set deadline
      *
